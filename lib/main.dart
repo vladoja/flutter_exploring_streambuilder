@@ -39,7 +39,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
   late Stream<int?> numbersStream;
 
   Stream<int?> getNumbers() async* {
@@ -57,9 +56,9 @@ class _MyHomePageState extends State<MyHomePage> {
     numbersStream = getNumbers();
   }
 
-  void _incrementCounter() {
+  void _restartStream() {
     setState(() {
-      _counter++;
+      numbersStream = getNumbers();
     });
   }
 
@@ -86,9 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: _restartStream,
+        tooltip: 'Restart Stream',
+        child: const Icon(Icons.refresh),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
