@@ -41,9 +41,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  Future<int?> getNumbers() async {
+  Stream<int?> getNumbers() async* {
     await Future.delayed(const Duration(seconds: 4));
-    return 1;
+    yield 1;
+    await Future.delayed(const Duration(seconds: 1));
+    yield 2;
+    await Future.delayed(const Duration(seconds: 1));
+    yield 3;
   }
 
   void _incrementCounter() {
@@ -59,13 +63,17 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Future builder'),
       ),
       body: Center(
-        child: FutureBuilder<int?>(
-          future: getNumbers(),
+        child: StreamBuilder<int?>(
+          stream: getNumbers(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data.toString());
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Text('⏳ Waiting for data');
+            } else if (snapshot.hasData) {
+              int number = snapshot.data!;
+              return Text('🙋‍♂️ $number');
+            } else {
+              return const Text('No data!');
             }
-            return const Text('⏳ Waiting for data');
           },
         ),
       ),
