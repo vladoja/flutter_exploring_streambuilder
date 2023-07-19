@@ -48,6 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
     yield 2;
     await Future.delayed(const Duration(seconds: 1));
     yield 3;
+    await Future.delayed(const Duration(seconds: 1));
+    throw 'An Error';
   }
 
   @override
@@ -78,6 +80,8 @@ class _MyHomePageState extends State<MyHomePage> {
             } else if (snapshot.hasData) {
               int number = snapshot.data!;
               return Text('🙋‍♂️ $number');
+            } else if (snapshot.hasError) {
+              return Text('😥 ${snapshot.error}');
             } else {
               return const Text('No data!');
             }
